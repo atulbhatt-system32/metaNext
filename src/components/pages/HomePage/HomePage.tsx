@@ -13,13 +13,17 @@ const HomePage = () => {
 
   useEffect(() => {
     const getSummary = async () => {
-      const response = await fetch("/src/assets/summary.json");
+      const response = await fetch(
+        "https://file.notion.so/f/s/c4815b33-b4ec-4ac7-b517-c86a8c01d2be/summary.json?id=6b5a85bc-69ff-45ce-b6c1-4284e8eade60&table=block&spaceId=059c2a1b-35a9-4d47-9de6-42632cad988b&expirationTimestamp=1681986916495&signature=-LV-Qi2cVBLX4GUiMsD-1R65ATHT2qFgPIHzZIPybzw&downloadName=summary.json"
+      );
       const data = await response.json();
       setSummary(data);
     };
 
     const getConversation = async () => {
-      const response = await fetch("/src/assets/transcript.json");
+      const response = await fetch(
+        "https://file.notion.so/f/s/8709d132-f76d-4af6-a708-ab964f072c5e/transcript.json?id=40e8c14b-e671-44a2-a026-3727ead04366&table=block&spaceId=059c2a1b-35a9-4d47-9de6-42632cad988b&expirationTimestamp=1681986977947&signature=pWByX0bPgWa9BS1aFFUb7ODAWAoRiVb4YuZwo-DFOEE&downloadName=transcript.json"
+      );
       const data = await response.json();
       console.log(data?.transcript);
       originalTranscriptRef.current = data?.transcript?.replaceAll(
