@@ -25,12 +25,9 @@ const HomePage = () => {
         "https://file.notion.so/f/s/8709d132-f76d-4af6-a708-ab964f072c5e/transcript.json?id=40e8c14b-e671-44a2-a026-3727ead04366&table=block&spaceId=059c2a1b-35a9-4d47-9de6-42632cad988b&expirationTimestamp=1682089489257&signature=phdS56X0S0gxwhPDeOhC98CiYM8w5wCd2vlQ7pHdaNI&downloadName=transcript.json"
       );
       const data = await response.json();
-      console.log(data?.transcript);
+
       originalTranscriptRef.current = data?.transcript;
-      let _transcript = originalTranscriptRef.current?.replaceAll(
-        '"\n\n',
-        '"<br/> <br/>'
-      );
+      let _transcript = data?.transcript?.replaceAll('"\n\n', '"<br/> <br/>');
 
       setConversation(_transcript);
     };
@@ -45,10 +42,11 @@ const HomePage = () => {
 
   const handleSummaryItemClick = useCallback((ranges: [number, number][]) => {
     let transcript = originalTranscriptRef.current;
-
-    ranges.forEach((range) => {
+    console.log(transcript);
+    ranges.forEach((range, index) => {
       const [start, end] = range;
-      const selectedText = transcript?.slice(start, end);
+      const selectedText = originalTranscriptRef?.current?.slice(start, end);
+
       if (transcript && selectedText) {
         transcript = transcript
           ?.replace(
