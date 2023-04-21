@@ -40,9 +40,19 @@ const HomePage = () => {
     setHoveredIndex(index);
   }, []);
 
+  function scrollToNextHighlightedText(index: number) {
+    const nextHightlightedText = transcriptRef.current?.querySelector(
+      `#highlight${index + 1}`
+    );
+
+    if (nextHightlightedText) {
+      nextHightlightedText.scrollIntoView();
+    }
+  }
+
   const handleSummaryItemClick = useCallback((ranges: [number, number][]) => {
     let transcript = originalTranscriptRef.current;
-    console.log(transcript);
+
     ranges.forEach((range, index) => {
       const [start, end] = range;
       const selectedText = originalTranscriptRef?.current?.slice(start, end);
@@ -51,7 +61,15 @@ const HomePage = () => {
         transcript = transcript
           ?.replace(
             selectedText,
-            `<span class="highlighted-text">${selectedText}</span>`
+            `<span class="highlighted-text" id="highlight${index}"
+            >${selectedText}</span>
+
+            <span class="highlight-item" data-index="${index}"
+            style="background-color:blue; color:white; cursor:pointer;"
+            >
+             <sup> ${index + 1} / ${ranges.length} </sup>
+            </span>
+            `
           )
           ?.replaceAll('"\n\n', '"<br/> <br/>');
       }
@@ -61,12 +79,24 @@ const HomePage = () => {
   }, []);
 
   const scrollToFirstHighlightedText = useCallback(() => {
+    //attach onclick event to all highlighted items
+
+    const highlightedItems =
+      transcriptRef.current?.querySelectorAll(".highlight-item");
+
+    highlightedItems?.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        const dataIndex = item.getAttribute("data-index");
+        if (dataIndex) scrollToNextHighlightedText(+dataIndex);
+      });
+    });
+
     const firstHighlightedText =
       transcriptRef.current?.querySelector(".highlighted-text");
     if (firstHighlightedText) {
       firstHighlightedText.scrollIntoView();
     }
-  }, [conversation]);
+  }, [conversation, transcriptRef]);
 
   useEffect(() => {
     scrollToFirstHighlightedText();

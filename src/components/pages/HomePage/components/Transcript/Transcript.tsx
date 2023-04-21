@@ -7,7 +7,7 @@ interface TranscriptProps {
 
 const Transcript = ({ conversation, transcriptRef }: TranscriptProps) => {
   return (
-    <div className=" transcript-container" ref={transcriptRef}>
+    <div className="transcript-container" ref={transcriptRef}>
       <div
         className="content-container"
         dangerouslySetInnerHTML={{ __html: conversation }}
